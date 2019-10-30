@@ -2,7 +2,7 @@ CHANGES
 =======
 
 
-1.0.0 (unreleased)
+1.0.0 (2019-10-30)
 ------------------
 
 - First release.
