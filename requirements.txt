@@ -2,6 +2,17 @@ jira_exporter==1.0.1
 
 prometheus-client==0.6.0
 
+jira==2.0.0
+  cryptography==2.7
+    asn1crypto==0.24.0
+    pbr==5.4.3
+  defusedxml==0.6.0
+  requests-oauthlib==1.2.0
+    pycparser==2.19
+    PyJWT==1.7.1
+  requests-toolbelt==0.9.1
+  six==1.12.0
+
 requests==2.22.0
   certifi==2019.3.9
   chardet==3.0.4
