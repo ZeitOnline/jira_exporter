@@ -112,7 +112,7 @@ def main():
     parser.add_argument('--username', help='Jira API username')
     parser.add_argument('--password', help='Jira API token')
     parser.add_argument('--host', default='', help='Listen host')
-    parser.add_argument('--port', default=9642, type=int, help='Listen port')
+    parser.add_argument('--port', default=9653, type=int, help='Listen port')
     parser.add_argument('--ttl', default=600, type=int, help='Cache TTL')
     options = parser.parse_args()
     if not options.url:
