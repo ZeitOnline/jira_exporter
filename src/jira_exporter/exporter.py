@@ -38,7 +38,6 @@ class IssueCollector:
         self.username = username
         self.password = password
         self.cache_ttl = cache_ttl
-        self.states = ['open', 'resolved', 'closed']
 
     METRICS = {
         'issues': Gauge(
@@ -70,14 +69,22 @@ class IssueCollector:
             key: value.clone() for key, value in self.METRICS.items()}
 
         log.info('Retrieving data from Jira API')
+        statuses = api.statuses()
+
         for project in api.projects():
-            for status in self.states:
+            for status in statuses:
+                status = status.name
                 try:
                     issues = api.search_issues(
                         'project="%s" AND status="%s"' % (project.key, status),
                         json_result=True, maxResults=0)
-                    metrics['issues'].add_metric(
-                        (project.key, status), issues.get('total', 0))
+                    count = issues.get('total', 0)
+                    if count:
+                        # Statuses is the union of all possible statuses, not
+                        # just the ones applicable for this project, so let's
+                        # not create lots of zero-valued unhelpful time series.
+                        metrics['issues'].add_metric(
+                            (project.key, status), count)
                 except Exception:
                     log.warning('Error for project %s, ignored.', project.key,
                                 exc_info=True)
