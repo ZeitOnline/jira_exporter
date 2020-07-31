@@ -1,6 +1,5 @@
-# docker build --tag zeitonline/jira-exporter:PACKAGEVERSION-DOCKERVERSION .
-FROM python:3-alpine
-RUN apk add gcc musl-dev openssl-dev libffi-dev
+# docker build --tag registry.zeit.de/jira-exporter:PACKAGEVERSION-DOCKERVERSION .
+FROM python:3-slim
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-deps -r requirements.txt
