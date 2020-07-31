@@ -1,4 +1,4 @@
-jira_exporter==1.0.1
+jira_exporter==1.1.0
 
 prometheus-client==0.6.0
 
