@@ -32,6 +32,8 @@ Pass ``--ttl=SECONDS`` to cache API results for the given time or -1 to disable 
 Prometheus considers metrics stale after 300s, so that's the highest scrape_interval one should use.
 However it's usually unnecessary to hit the API that often, since the vulnerability alert information does not change that rapidly.
 
+You can restrict which projects to look at by passing a comma-separated list of project keys (``FOO``, ``BAR`` etc.) with ``--projects``.
+
 
 Configure Prometheus
 --------------------

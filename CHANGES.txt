@@ -5,7 +5,7 @@ CHANGES
 1.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make projects configurable.
 
 
 1.0.1 (2019-10-30)

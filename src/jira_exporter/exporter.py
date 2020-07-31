@@ -33,11 +33,12 @@ class IssueCollector:
     _cache_value = None
     _cache_updated_at = 0
 
-    def configure(self, base_url, username, password, cache_ttl):
+    def configure(self, base_url, username, password, cache_ttl, projects):
         self.base_url = base_url
         self.username = username
         self.password = password
         self.cache_ttl = cache_ttl
+        self.projects = projects
 
     METRICS = {
         'issues': Gauge(
@@ -71,12 +72,17 @@ class IssueCollector:
         log.info('Retrieving data from Jira API')
         statuses = api.statuses()
 
-        for project in api.projects():
+        if not self.projects:
+            projects = [x.key for x in api.projects()]
+        else:
+            projects = self.projects
+
+        for project in projects:
             for status in statuses:
                 status = status.name
                 try:
                     issues = api.search_issues(
-                        'project="%s" AND status="%s"' % (project.key, status),
+                        'project="%s" AND status="%s"' % (project, status),
                         json_result=True, maxResults=0)
                     count = issues.get('total', 0)
                     if count:
@@ -84,9 +90,9 @@ class IssueCollector:
                         # just the ones applicable for this project, so let's
                         # not create lots of zero-valued unhelpful time series.
                         metrics['issues'].add_metric(
-                            (project.key, status), count)
+                            (project, status), count)
                 except Exception:
-                    log.warning('Error for project %s, ignored.', project.key,
+                    log.warning('Error for project %s, ignored.', project,
                                 exc_info=True)
                     break
 
@@ -114,6 +120,8 @@ def main():
     parser.add_argument('--host', default='', help='Listen host')
     parser.add_argument('--port', default=9653, type=int, help='Listen port')
     parser.add_argument('--ttl', default=600, type=int, help='Cache TTL')
+    parser.add_argument('--projects', default='',
+                        help='Comma-separated list of project keys')
     options = parser.parse_args()
     if not options.url:
         options.url = os.environ.get('JIRA_URL')
@@ -121,12 +129,17 @@ def main():
         options.username = os.environ.get('JIRA_USERNAME')
     if not options.password:
         options.password = os.environ.get('JIRA_PASSWORD')
+    if not options.projects:
+        options.projects = os.environ.get('JIRA_PROJECTS', '')
+    if options.projects:
+        options.projects = options.projects.split(',')
 
     logging.basicConfig(
         stream=sys.stdout, level=logging.INFO, format=LOG_FORMAT)
 
     COLLECTOR.configure(
-        options.url, options.username, options.password, options.ttl)
+        options.url, options.username, options.password, options.ttl,
+        options.projects)
 
     log.info('Listening on 0.0.0.0:%s', options.port)
     httpd = prometheus_client.exposition.make_server(
