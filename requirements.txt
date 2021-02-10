@@ -3,7 +3,7 @@ jira_exporter==1.1.0
 prometheus-client==0.6.0
 
 jira==2.0.0
-  cryptography==3.2
+  cryptography==3.3.2
     asn1crypto==0.24.0
     pbr==5.4.3
   defusedxml==0.6.0
