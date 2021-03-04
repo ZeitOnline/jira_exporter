@@ -79,7 +79,7 @@ class IssueCollector:
 
         for project in projects:
             for status in statuses:
-                status = status.name
+                status = status.id
                 try:
                     issues = api.search_issues(
                         'project="%s" AND status="%s"' % (project, status),

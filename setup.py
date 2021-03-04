@@ -6,7 +6,7 @@ setup(
     version='1.2.0.dev0',
     author='Wolfgang Schnerring',
     author_email='wolfgang.schnerring@zeit.de',
-    url='https://github.com/ZeitOnline/jira_exporter',
+    url='https://github.com/linhct2413/jira_exporter',
     description='',
     long_description=(
         open('README.rst').read() +
