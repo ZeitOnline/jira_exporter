@@ -1,4 +1,4 @@
-# docker build --tag registry.zeit.de/jira-exporter:PACKAGEVERSION-DOCKERVERSION .
+# docker build --tag eu.gcr.io/zeitonline-210413/jira-exporter:PACKAGEVERSION-DOCKERVERSION .
 FROM python:3-slim
 WORKDIR /app
 COPY requirements.txt .
