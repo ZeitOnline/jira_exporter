@@ -1,6 +1,6 @@
 jira_exporter==1.1.0
 
-prometheus-client==0.11.0
+prometheus-client==0.15.0
 
 jira==3.0.1
   defusedxml==0.7.1
